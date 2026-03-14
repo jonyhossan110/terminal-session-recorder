@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "terminal-session-recorder"
+version = "1.1.0"
+description = "Professional Terminal Session Recorder with Command Logging and PDF Reports"
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.6"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    "reportlab>=4.0.0",
+    "mss>=9.0.1",
+    "Pillow>=10.2.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/YOUR_USERNAME/terminal-session-recorder"
+Repository = "https://github.com/YOUR_USERNAME/terminal-session-recorder"
+Issues = "https://github.com/YOUR_USERNAME/terminal-session-recorder/issues"
+Documentation = "https://github.com/YOUR_USERNAME/terminal-session-recorder#readme"
+
+[project.scripts]
+terminal-session-recorder = "main:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
