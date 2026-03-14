@@ -28,10 +28,10 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/YOUR_USERNAME/terminal-session-recorder"
-Repository = "https://github.com/YOUR_USERNAME/terminal-session-recorder"
-Issues = "https://github.com/YOUR_USERNAME/terminal-session-recorder/issues"
-Documentation = "https://github.com/YOUR_USERNAME/terminal-session-recorder#readme"
+Homepage = "https://github.com/jonyhossan110/terminal-session-recorder"
+Repository = "https://github.com/jonyhossan110/terminal-session-recorder"
+Issues = "https://github.com/jonyhossan110/terminal-session-recorder/issues"
+Documentation = "https://github.com/jonyhossan110/terminal-session-recorder#readme"
 
 [project.scripts]
 terminal-session-recorder = "main:main"
