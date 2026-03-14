@@ -42,8 +42,8 @@ chmod +x setup_linux.sh
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/web-security-tool.git
-   cd web-security-tool
+   git clone https://github.com/jonyhossan110/terminal-session-recorder.git
+   cd terminal-session-recorder
    ```
 
 2. Install dependencies:
