@@ -20,7 +20,7 @@ A professional tool for recording terminal sessions with command logging, output
 - **Configurable Output**: Custom file prefixes and user naming
 - **Streaming Capture**: Real-time command output streaming with minimal overhead
 - **Auto-Save Safety**: Partial logs flushed to disk after each command to avoid data loss
-- **Terminal-Only Screenshots**: Captures the terminal area (bottom portion of screen) after each command execution, focusing on terminal content only
+- **Full Screen Screenshots**: Captures the entire screen after each command execution for complete context
 - **Rich Visual Elements**: Professional typography, color schemes, and structured layouts
 
 ## Installation

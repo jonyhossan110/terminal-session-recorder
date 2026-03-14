@@ -189,14 +189,14 @@ class TerminalSessionRecorder:
                 'height': min(terminal_rect['height'], 1080)  # Cap height
             }
         else:
-            # Fallback: capture bottom portion of screen (assuming terminal is at bottom)
+            # Full screen capture
             with mss.mss() as sct:
                 screen = sct.monitors[1]
                 monitor = {
                     'left': 0,
-                    'top': int(screen['height'] * 0.6),  # Bottom 40% of screen
+                    'top': 0,
                     'width': screen['width'],
-                    'height': int(screen['height'] * 0.4)
+                    'height': screen['height']
                 }
 
         with mss.mss() as sct:
@@ -211,7 +211,7 @@ class TerminalSessionRecorder:
             'resolution': resolution,
         }
         self.screenshots.append(record)
-        self.log(f"[ok] Terminal screenshot captured: {path} ({resolution})")
+        self.log(f"[ok] Full screenshot captured: {path} ({resolution})")
         return record
 
     def _record_entry(self, entry: dict):
