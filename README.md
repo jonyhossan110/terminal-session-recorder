@@ -1,37 +1,84 @@
-# Terminal Session Recorder v2.0.0
+# Terminal Session Recorder (TSR) v2.0.0
 
 [![Python Version](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Version](https://img.shields.io/badge/version-2.0.0-green.svg)](https://github.com/jonyhossan110/terminal-session-recorder)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
+[![Downloads](https://img.shields.io/badge/downloads-1K+-orange.svg)]()
 
-**Enterprise-grade terminal session recorder for penetration testing and security audits**
+**Enterprise-grade terminal session recorder for penetration testing, security audits, and professional documentation**
 
 Developed by **Md. Jony Hassain** | **HexaCyberLab Web Agency**
 
 ---
 
-## 🚀 What's New in v2.0
+## 📋 Table of Contents
 
-### Major Improvements
-- ⚡ **5x Faster Performance** - Async/await architecture
-- 🗄️ **SQLite Database** - Fast querying and session management
-- 🧠 **Smart Command Classification** - Auto-detect pentesting tools (nmap, metasploit, etc.)
-- 🖥️ **PTY/TTY Support** - Full terminal emulation on Linux
-- 🌐 **Interactive HTML Reports** - Searchable, filterable, beautiful
-- 📊 **Real-time Web Dashboard** - Monitor sessions live
-- 🔌 **Plugin System** - Extensible with custom plugins
-- 🔐 **Evidence Chain** - Cryptographic hashing for audit trails
-- 📸 **Advanced Screenshots** - Full screen capture with OCR support
-- 🌍 **Network Monitoring** - Packet capture integration (scapy)
-- 📈 **Resource Monitoring** - Track CPU, memory, disk, network
-- 🔗 **LinkedIn Integration** - Share session summaries on LinkedIn
+- [🚀 Overview](#-overview)
+- [✨ Key Features](#-key-features)
+- [📦 Quick Installation](#-quick-installation)
+- [🎯 Quick Start](#-quick-start)
+- [💡 Core Features](#-core-features)
+- [📋 Command Reference](#-command-reference)
+- [⚙️ Configuration](#-configuration)
+- [🔗 LinkedIn Integration](#-linkedin-integration)
+- [🌐 Web Dashboard](#-web-dashboard)
+- [🔧 Advanced Features](#-advanced-features)
+- [📊 Use Cases](#-use-cases)
+- [🛠️ Development](#-development)
+- [🔒 Security](#-security)
+- [🐛 Troubleshooting](#-troubleshooting)
+- [📜 License](#-license)
+- [👨‍💻 Author](#-author)
 
 ---
 
-## 📦 Installation
+## 🚀 Overview
 
-### Quick Install (Recommended)
+**Terminal Session Recorder (TSR) v2.0.0** is a comprehensive tool designed for penetration testers, security professionals, and IT administrators to record, analyze, and document terminal sessions with enterprise-grade features.
 
+### What's New in v2.0.0
+- ⚡ **Auto-Terminal Recording** - Every new terminal session is automatically recorded
+- 🔗 **LinkedIn Integration** - Share session summaries professionally on LinkedIn
+- 🖥️ **PTY/TTY Support** - Full terminal emulation for Linux/macOS
+- 📊 **Real-time Web Dashboard** - Monitor sessions live with interactive interface
+- 🔌 **Plugin System** - Extensible architecture with built-in plugins
+- 📈 **Advanced Analytics** - Command classification and session statistics
+- 🌐 **Multi-Format Exports** - PDF, HTML, JSON, CSV with professional layouts
+
+---
+
+## ✨ Key Features
+
+| Feature | Description |
+|---------|-------------|
+| 🎥 **Session Recording** | Full terminal session capture with metadata |
+| 🧠 **Smart Classification** | Auto-detects pentesting tools and command types |
+| 📸 **Screenshot Capture** | Full-screen captures with OCR support |
+| 🌐 **Network Monitoring** | Packet capture integration (scapy) |
+| 📊 **Resource Tracking** | CPU, memory, disk, and network I/O monitoring |
+| 🔐 **Evidence Chain** | Cryptographic hashing for audit trails |
+| 📋 **Multi-Format Export** | PDF, HTML, JSON, CSV reports |
+| 🔗 **LinkedIn Sharing** | Professional social media integration |
+| 🌐 **Web Dashboard** | Real-time monitoring and management |
+| 🔌 **Plugin Architecture** | Extensible with custom plugins |
+| 🗄️ **SQLite Database** | Fast querying and session management |
+| 🔄 **Session Replay** | Interactive playback of recorded sessions |
+
+---
+
+## 📦 Quick Installation
+
+### One-Line Install (All Platforms)
+```bash
+# Linux/macOS
+curl -fsSL https://raw.githubusercontent.com/jonyhossan110/terminal-session-recorder/main/install.sh | bash
+
+# Windows PowerShell (Run as Administrator)
+irm https://raw.githubusercontent.com/jonyhossan110/terminal-session-recorder/main/install.ps1 | iex
+```
+
+### Standard Installation
 ```bash
 # Clone repository
 git clone https://github.com/jonyhossan110/terminal-session-recorder.git
@@ -40,14 +87,997 @@ cd terminal-session-recorder
 # Install with all features
 pip install -e ".[all]"
 
-# Or install minimal version
-pip install -e .
+# Initialize configuration
+tsr init
 ```
 
-### From PyPI (Coming Soon)
+### Platform-Specific Setup
+For detailed installation instructions including system dependencies, troubleshooting, and feature demonstrations, see:
+- **[📖 Complete Installation Guide](INSTALL.md)**
+
+---
+
+## 🎯 Quick Start
+
+### Basic Recording Session
+```bash
+# Start recording
+tsr record --user-name "Your Name"
+
+# Your terminal session is now being recorded...
+$ echo "Hello, TSR!"
+$ ls -la
+$ whoami
+$ exit
+
+# Session automatically saved with timestamp
+```
+
+### Advanced Recording with All Features
+```bash
+tsr record \
+  --user-name "Security Professional" \
+  --organization "Your Company" \
+  --enable-screenshots \
+  --enable-network-monitor \
+  --export-formats pdf,html,json \
+  --tags "pentest,reconnaissance"
+```
+
+### View Recorded Sessions
+```bash
+# List all sessions
+tsr list
+
+# View specific session details
+tsr list SESSION_ID
+
+# Search for commands
+tsr search --command "nmap"
+```
+
+### Export Professional Reports
+```bash
+# Export to PDF report
+tsr export SESSION_ID --format pdf --output pentest_report.pdf
+
+# Export to interactive HTML
+tsr export SESSION_ID --format html --output session_timeline.html
+
+# Export structured data
+tsr export SESSION_ID --format json --output session_data.json
+```
+
+### Share on LinkedIn
+```bash
+# Share session summary professionally
+tsr linkedin share SESSION_ID --message "Completed comprehensive security assessment with TSR v2.0.0"
+```
+
+---
+
+## 💡 Core Features
+
+### 1. **Intelligent Command Classification**
+TSR automatically categorizes commands into security domains:
+
+| Category | Tools | Description |
+|----------|-------|-------------|
+| 🔍 **Reconnaissance** | whois, nslookup, dig, shodan | Information gathering |
+| 🔎 **Scanning** | nmap, masscan, nikto, zmap | Network scanning |
+| 📋 **Enumeration** | gobuster, dirb, enum4linux, ldapsearch | Service enumeration |
+| 💥 **Exploitation** | metasploit, sqlmap, hydra, john | Vulnerability exploitation |
+| 🔓 **Post-Exploitation** | mimikatz, empire, bloodhound | Privilege escalation |
+| 🌐 **Web Security** | burp, zap, wpscan, nuclei | Web application testing |
+| 🛡️ **Defense** | fail2ban, ufw, iptables | Security hardening |
+
+### 2. **Professional Export Formats**
+
+#### PDF Reports
+- Executive summary with session statistics
+- Command timeline with syntax highlighting
+- Embedded screenshots and network captures
+- Professional formatting with company branding
+- Evidence chain verification
+
+#### HTML Reports
+- Interactive, searchable interface
+- Real-time filtering and sorting
+- Responsive design for all devices
+- Embedded media and charts
+- Shareable web links
+
+#### Structured Data (JSON/CSV)
+- Complete session metadata
+- Command execution details
+- Performance metrics
+- API-ready format for integration
+
+### 3. **Real-Time Monitoring Dashboard**
+```bash
+# Start the web interface
+tsr server --port 5000
+
+# Access at: http://localhost:5000
+```
+
+**Dashboard Features:**
+- 📊 Live session monitoring
+- 🔍 Advanced search and filtering
+- 📈 Performance analytics
+- 🎯 Command classification insights
+- 📱 Responsive design
+- 🔄 Real-time updates
+
+### 4. **Auto-Terminal Recording**
+Automatically record every new terminal session:
+
+**Linux/macOS:**
+```bash
+# Add to ~/.bashrc or ~/.zshrc
+if [ -z "$TSR_AUTO_REC" ]; then
+  export TSR_AUTO_REC=1
+  tsr record --user-name "$USER" --output-dir "$HOME/.tsr/sessions"
+  exit
+fi
+```
+
+**Windows:**
+```batch
+REM Add to Windows Terminal profile
+if "%TSR_AUTO_REC%"=="" (
+  set TSR_AUTO_REC=1
+  tsr record --user-name "%USERNAME%" --output-dir "%USERPROFILE%\.tsr\sessions"
+  exit
+)
+```
+
+### 5. **Plugin Architecture**
+Extend TSR with custom plugins:
+
+```python
+from tsr.plugins.base import BasePlugin
+
+class CustomPlugin(BasePlugin):
+    @property
+    def name(self) -> str:
+        return "custom-security-tools"
+
+    async def on_command_execute(self, command: str, output: str):
+        # Analyze command output
+        if "vulnerability" in output.lower():
+            return {"severity": "high", "type": "security"}
+        return {}
+```
+
+**Built-in Plugins:**
+- **MetasploitPlugin**: Enhanced Metasploit session tracking
+- **NmapPlugin**: Automatic nmap result parsing
+- **BurpPlugin**: Burp Suite integration
+- **WiresharkPlugin**: Packet analysis integration
+
+---
+
+## 📋 Command Reference
+
+### Recording Commands
+```bash
+tsr record                                # Start basic recording
+tsr record --user-name "Name"            # Set user name
+tsr record --organization "Company"      # Set organization
+tsr record --enable-screenshots          # Enable screenshot capture
+tsr record --enable-network-monitor      # Enable network monitoring
+tsr record --enable-resource-monitor     # Enable system monitoring
+tsr record --timeout 600                 # Set session timeout
+tsr record --output-dir ./sessions       # Custom output directory
+tsr record --tags "pentest,recon"        # Add session tags
+tsr record --export-formats pdf,html     # Auto-export formats
+```
+
+### Session Management
+```bash
+tsr list                                 # List all sessions
+tsr list --limit 20                      # Show last 20 sessions
+tsr list --user "username"               # Filter by user
+tsr list --date "2024-01-15"             # Filter by date
+tsr list SESSION_ID                      # Show session details
+tsr list --format json                   # JSON output
+```
+
+### Search & Analysis
+```bash
+tsr search --query "nmap"                # Search in commands
+tsr search --command-type "exploitation" # Filter by category
+tsr search --user "pentester"            # Filter by user
+tsr search --date-range "2024-01-01:2024-01-31"  # Date range
+tsr search --tags "critical"             # Filter by tags
+tsr search --ip "192.168.1.1"            # Filter by IP addresses
+```
+
+### Export & Reporting
+```bash
+tsr export SESSION_ID --format pdf       # Export to PDF
+tsr export SESSION_ID --format html      # Export to HTML
+tsr export SESSION_ID --format json      # Export to JSON
+tsr export SESSION_ID --format csv       # Export to CSV
+tsr export SESSION_ID --format all       # Export all formats
+tsr export SESSION_ID -o report.pdf      # Custom output path
+tsr export --batch --user "pentester"    # Batch export user sessions
+```
+
+### LinkedIn Integration
+```bash
+tsr linkedin setup                       # Setup LinkedIn API access
+tsr linkedin share SESSION_ID            # Share session on LinkedIn
+tsr linkedin share SESSION_ID --message "Custom message"  # Custom post
+tsr linkedin share SESSION_ID --dry-run  # Preview without posting
+tsr linkedin list                        # List shared posts
+tsr linkedin auth                        # Refresh authentication
+```
+
+### Web Dashboard
+```bash
+tsr server                               # Start dashboard (port 5000)
+tsr server --port 8080                   # Custom port
+tsr server --host 0.0.0.0                # Bind to all interfaces
+tsr server --debug                       # Debug mode
+```
+
+### Special Commands (During Recording)
+```bash
+:snap                                    # Take screenshot
+:snap "Login attempt"                    # Screenshot with description
+:tag important                           # Tag last command
+:stats                                   # Show session statistics
+:note "Important finding"                # Add session note
+:help                                    # Show help
+```
+
+---
+
+## ⚙️ Configuration
+
+### Configuration File Location
+TSR searches for configuration in order:
+1. `~/.tsr/config.yaml` (recommended)
+2. `~/.tsr/config.json`
+3. `./tsr.yaml` (project directory)
+4. `/etc/tsr/config.yaml` (system-wide)
+
+### Initialize Configuration
+```bash
+tsr init
+```
+
+### Sample Configuration
+```yaml
+# User Information
+user_name: "Md. Jony Hassain"
+organization: "HexaCyberLab Web Agency"
+email: "jonyhossan110@gmail.com"
+
+# Session Settings
+session:
+  auto_save: true
+  max_commands: 10000
+  truncate_output: 5000
+  command_timeout: 300
+  enable_screenshots: true
+  enable_network_monitor: false
+  enable_resource_monitor: true
+  auto_export_formats: [json, html]
+
+# Database Configuration
+database:
+  backend: sqlite
+  path: "~/.tsr/sessions.db"
+  connection_pool_size: 5
+
+# Export Settings
+export:
+  default_formats: [pdf, html, json]
+  pdf_theme: professional
+  html_theme: dark
+  compress_exports: false
+  include_screenshots: true
+  include_network_data: false
+
+# Security Settings
+security:
+  enable_encryption: false
+  enable_hashing: true
+  redact_passwords: true
+  redact_api_keys: true
+  redact_tokens: true
+  evidence_chain: true
+
+# LinkedIn Integration
+linkedin:
+  enabled: true
+  auto_share: false
+  default_message_template: "Completed terminal session recording with TSR v2.0.0"
+
+# Plugin Configuration
+plugins:
+  enabled_plugins:
+    - metasploit
+    - nmap
+    - burp
+  custom_plugins_path: "~/.tsr/plugins"
+
+# Monitoring Settings
+monitoring:
+  screenshot_interval: 30
+  resource_poll_interval: 5
+  network_capture_interface: "eth0"
+  enable_system_calls: false
+
+# Logging
+logging:
+  level: INFO
+  file: "~/.tsr/tsr.log"
+  max_size: 10MB
+  backup_count: 5
+```
+
+---
+
+## 🔗 LinkedIn Integration
+
+Share your professional terminal sessions on LinkedIn for networking and knowledge sharing.
+
+### Setup Process
+
+1. **Create LinkedIn Application**:
+   - Visit [LinkedIn Developers](https://developer.linkedin.com/)
+   - Create a new app for TSR
+   - Configure OAuth 2.0 settings
+
+2. **Required Permissions**:
+   - `r_liteprofile` - Read basic profile information
+   - `w_member_social` - Post on behalf of user
+
+3. **Get Access Token**:
+   ```bash
+   tsr linkedin setup
+   ```
+   Follow the OAuth flow to authorize TSR.
+
+### Sharing Sessions
+```bash
+# Share with auto-generated message
+tsr linkedin share 12345
+
+# Custom professional message
+tsr linkedin share 12345 --message "Completed comprehensive penetration testing session covering reconnaissance, scanning, and exploitation phases using industry-standard tools."
+
+# Preview before posting
+tsr linkedin share 12345 --dry-run
+
+# Share multiple sessions
+tsr linkedin share 12345 12346 12347 --message "Weekly security assessment summary"
+```
+
+### Example LinkedIn Post
+```
+🔍 Terminal Session Recording - TSR v2.0.0
+
+📊 Session Summary:
+• Duration: 45 minutes
+• Commands Executed: 127
+• Tools Used: nmap, metasploit, burp
+• User: Md. Jony Hassain
+• Organization: HexaCyberLab Web Agency
+
+#CyberSecurity #PenetrationTesting #TerminalRecording #TSR #SecurityAudits #EthicalHacking
+
+Generated by Terminal Session Recorder v2.0.0
+Learn more: https://github.com/jonyhossan110/terminal-session-recorder
+```
+
+### Managing LinkedIn Integration
+```bash
+tsr linkedin list                        # View shared posts
+tsr linkedin auth                        # Refresh authentication
+tsr linkedin revoke                      # Revoke access
+tsr linkedin status                      # Check connection status
+```
+
+---
+
+## 🌐 Web Dashboard
+
+The TSR web dashboard provides real-time monitoring and management of your terminal sessions.
+
+### Starting the Dashboard
+```bash
+# Default configuration
+tsr server
+
+# Custom settings
+tsr server --port 8080 --host 0.0.0.0 --debug
+```
+
+### Dashboard Features
+
+#### 📊 Real-Time Monitoring
+- Live session activity
+- Active recording sessions
+- System resource usage
+- Network activity graphs
+
+#### 🔍 Session Management
+- Browse all recorded sessions
+- Advanced search and filtering
+- Session details and metadata
+- Command timeline view
+
+#### 📈 Analytics & Insights
+- Command type distribution
+- Session duration statistics
+- Tool usage analytics
+- Performance metrics
+
+#### 🎯 Interactive Features
+- Real-time command streaming
+- Screenshot gallery
+- Network capture viewer
+- Export session data
+
+#### 🔒 Security Features
+- Session-based authentication
+- Role-based access control
+- Audit logging
+- Secure API endpoints
+
+### API Endpoints
+```bash
+# Get all sessions
+GET /api/sessions
+
+# Get specific session
+GET /api/sessions/{id}
+
+# Search sessions
+GET /api/search?q=nmap
+
+# Export session
+GET /api/export/{id}?format=pdf
+
+# Real-time updates
+GET /api/stream
+```
+
+---
+
+## 🔧 Advanced Features
+
+### Session Replay
+Replay recorded sessions with various options:
 
 ```bash
-pip install terminal-session-recorder
+# Normal speed replay
+tsr replay SESSION_ID
+
+# Speed control
+tsr replay SESSION_ID --speed 2.0      # 2x speed
+tsr replay SESSION_ID --speed 0.5      # Half speed
+
+# Interactive mode
+tsr replay SESSION_ID --interactive    # Step through commands
+
+# Time range replay
+tsr replay SESSION_ID --start "10:00" --end "10:30"
+
+# Output to file
+tsr replay SESSION_ID --output replay.mp4
+```
+
+### Evidence Chain & Integrity
+TSR maintains cryptographic integrity of all sessions:
+
+```python
+from tsr.utils.crypto import verify_session_integrity
+
+# Verify session hasn't been tampered with
+is_valid = verify_session_integrity(session_data)
+print(f"Session integrity: {'✓ Valid' if is_valid else '✗ Compromised'}")
+```
+
+### Data Redaction
+Automatic redaction of sensitive information:
+
+**Redacted Patterns:**
+- Passwords: `password=REDACTED`
+- API Keys: `api_key=REDACTED`
+- Tokens: `token=REDACTED`
+- Private Keys: `-----BEGIN PRIVATE KEY----- REDACTED`
+- AWS Credentials: `AWS_ACCESS_KEY_ID=REDACTED`
+
+### Network Capture Integration
+```bash
+# Enable network monitoring (requires root/admin)
+sudo tsr record --enable-network-monitor
+
+# PCAP files saved automatically
+# Integrated with session timeline
+# View in Wireshark or TSR dashboard
+```
+
+### Cloud Storage Integration
+```yaml
+cloud:
+  enabled: true
+  provider: s3  # s3, gcs, azure, dropbox
+  bucket: my-tsr-sessions
+  region: us-east-1
+  auto_upload: true
+  encryption: true
+```
+
+### Custom Plugin Development
+```python
+from tsr.plugins.base import BasePlugin
+from typing import Dict, Any, Optional
+
+class AdvancedSecurityPlugin(BasePlugin):
+    @property
+    def name(self) -> str:
+        return "advanced-security"
+
+    @property
+    def version(self) -> str:
+        return "1.0.0"
+
+    async def on_session_start(self, session_id: str, metadata: Dict[str, Any]):
+        """Called when recording starts"""
+        self.logger.info(f"Advanced security monitoring started for {session_id}")
+
+    async def on_command_execute(self, command: str, output: str, metadata: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        """Analyze each command execution"""
+        analysis = {}
+
+        # Vulnerability detection
+        if "sql injection" in output.lower():
+            analysis["vulnerability"] = "SQL Injection"
+            analysis["severity"] = "High"
+
+        # Compliance checking
+        if command.startswith("sudo") and "password" in output.lower():
+            analysis["compliance"] = "Password in sudo command"
+
+        return analysis
+
+    async def on_session_end(self, session_id: str, summary: Dict[str, Any]):
+        """Called when recording ends"""
+        self.logger.info(f"Security analysis complete for {session_id}")
+        # Generate security report
+        await self.generate_security_report(session_id, summary)
+```
+
+---
+
+## 📊 Use Cases
+
+### Penetration Testing
+```
+🎯 Professional pentesting documentation
+📋 Comprehensive audit trails
+📊 Client-ready reports
+🔍 Evidence collection
+⏱️ Timeline reconstruction
+👥 Team collaboration
+```
+
+### Security Audits & Compliance
+```
+📋 PCI-DSS compliance documentation
+📊 ISO 27001 evidence collection
+🔍 Vulnerability assessment records
+📈 Risk analysis reports
+⏱️ Incident response documentation
+🏢 Enterprise security audits
+```
+
+### Training & Education
+```
+👨‍🏫 Capture training sessions
+📚 Create interactive tutorials
+🎯 Demonstrate techniques
+📖 Build knowledge base
+👥 Share expertise
+🎓 Educational content creation
+```
+
+### Bug Bounty Programs
+```
+🎯 Document vulnerability discovery
+📋 Proof of concept creation
+👥 Team collaboration
+📊 Impact assessment
+⏱️ Timeline tracking
+💰 Bounty claim documentation
+```
+
+### DevOps & System Administration
+```
+🔧 Infrastructure changes tracking
+📊 Performance monitoring
+🐛 Troubleshooting documentation
+📋 Change management
+⏱️ Incident response
+👥 Team knowledge sharing
+```
+
+### Research & Development
+```
+🔬 Security research documentation
+📊 Data collection and analysis
+🎯 Methodology validation
+📋 Experimental records
+👥 Collaborative research
+📈 Performance benchmarking
+```
+
+---
+
+## 🛠️ Development
+
+### Development Setup
+```bash
+# Clone repository
+git clone https://github.com/jonyhossan110/terminal-session-recorder.git
+cd terminal-session-recorder
+
+# Create virtual environment
+python -m venv .venv
+source .venv/bin/activate  # Linux/macOS
+# .venv\Scripts\activate    # Windows
+
+# Install development dependencies
+pip install -e ".[dev]"
+
+# Run tests
+pytest tests/ -v
+
+# Run with coverage
+pytest tests/ --cov=tsr --cov-report=html
+```
+
+### Code Quality
+```bash
+# Linting
+flake8 tsr/ tests/
+black tsr/ tests/
+isort tsr/ tests/
+
+# Type checking
+mypy tsr/
+
+# Security scanning
+bandit -r tsr/
+```
+
+### Building & Packaging
+```bash
+# Build package
+python -m build
+
+# Install from local build
+pip install dist/terminal_session_recorder-2.0.0-py3-none-any.whl
+
+# Build documentation
+sphinx-build docs/ docs/_build/html
+```
+
+### Contributing Guidelines
+
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
+3. **Write** tests for new functionality
+4. **Implement** your changes
+5. **Run** the test suite (`pytest tests/`)
+6. **Commit** your changes (`git commit -m 'Add amazing feature'`)
+7. **Push** to your branch (`git push origin feature/amazing-feature`)
+8. **Open** a Pull Request
+
+### Plugin Development
+- See `tsr/plugins/base.py` for base plugin interface
+- Check `tsr/plugins/` for example implementations
+- Plugins are automatically discovered and loaded
+- Use async/await for performance
+
+### API Documentation
+```bash
+# Generate API docs
+sphinx-autodoc tsr/ docs/api/
+
+# View docs
+open docs/_build/html/index.html
+```
+
+---
+
+## 🔒 Security
+
+### Best Practices
+1. **Encrypt sensitive sessions** - Enable encryption in configuration
+2. **Redact credentials** - Automatic redaction is enabled by default
+3. **Secure database storage** - Use encrypted filesystems
+4. **Limit access permissions** - Set proper file permissions (`chmod 600`)
+5. **Regular cleanup** - Remove old/unneeded sessions
+6. **Network security** - Use HTTPS for web dashboard in production
+
+### Data Protection
+- **Automatic Redaction**: Passwords, API keys, tokens are automatically redacted
+- **Encryption Support**: Optional AES-256 encryption for session data
+- **Evidence Chain**: Cryptographic hashing ensures data integrity
+- **Access Control**: Role-based permissions for multi-user environments
+
+### Network Security
+```bash
+# Run dashboard with SSL
+tsr server --ssl-cert cert.pem --ssl-key key.pem
+
+# Restrict dashboard access
+tsr server --allowed-ips 192.168.1.0/24
+
+# Use reverse proxy (nginx/apache) for production
+```
+
+### Audit Trail
+- All commands are logged with timestamps
+- User actions are tracked
+- Session integrity is cryptographically verified
+- Export operations are logged
+
+---
+
+## 🐛 Troubleshooting
+
+### Installation Issues
+
+**Python Version Error**
+```bash
+# Check Python version
+python --version
+
+# Use Python 3.8+
+python3.9 -m pip install -e ".[all]"
+```
+
+**Permission Denied**
+```bash
+# Install without sudo (recommended)
+pip install --user -e ".[all]"
+
+# Add to PATH
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+**Missing Dependencies**
+```bash
+# Install system packages
+# Ubuntu/Debian
+sudo apt install python3-dev build-essential
+
+# macOS
+brew install python
+
+# Windows - install Visual Studio Build Tools
+```
+
+### Recording Issues
+
+**Screenshots Not Working**
+```bash
+# Install screenshot dependencies
+pip install mss Pillow
+
+# Check display access (Linux)
+xhost +local:
+```
+
+**Network Monitoring Fails**
+```bash
+# Install scapy
+pip install scapy
+
+# Run with elevated privileges
+sudo tsr record --enable-network-monitor
+
+# Check capabilities (Linux)
+sudo setcap cap_net_raw,cap_net_admin=eip $(which python)
+```
+
+**PTY/TTY Issues**
+```bash
+# Check platform support
+python -c "import sys; print(sys.platform)"
+
+# PTY only works on Unix-like systems (Linux/macOS)
+# Windows uses alternative terminal capture
+```
+
+### Database Issues
+
+**Database Locked**
+```bash
+# Close other TSR instances
+ps aux | grep tsr
+
+# Remove lock files
+rm ~/.tsr/sessions.db-wal ~/.tsr/sessions.db-shm
+```
+
+**Corrupted Database**
+```bash
+# Backup existing database
+cp ~/.tsr/sessions.db ~/.tsr/sessions.db.backup
+
+# Reinitialize
+rm ~/.tsr/sessions.db
+tsr init
+```
+
+### Export Issues
+
+**PDF Generation Fails**
+```bash
+# Install reportlab
+pip install reportlab
+
+# Check font support
+python -c "import reportlab.pdfbase.pdfmetrics"
+```
+
+**Memory Issues During Export**
+```bash
+# Export smaller batches
+tsr export SESSION_ID --format pdf --max-commands 1000
+
+# Increase system memory or use swap
+```
+
+### LinkedIn Integration Issues
+
+**Authentication Fails**
+```bash
+# Clear stored tokens
+rm ~/.tsr/linkedin_token.json
+
+# Re-run setup
+tsr linkedin setup
+```
+
+**Posting Fails**
+```bash
+# Check token validity
+tsr linkedin status
+
+# Refresh authentication
+tsr linkedin auth
+```
+
+### Performance Issues
+
+**High CPU Usage**
+```bash
+# Disable resource-intensive features
+tsr record --disable-screenshots --disable-network-monitor
+
+# Reduce monitoring intervals
+tsr record --resource-poll-interval 10
+```
+
+**Large Session Files**
+```bash
+# Enable compression
+# In config.yaml
+export:
+  compress_exports: true
+
+# Limit output truncation
+session:
+  truncate_output: 1000
+```
+
+### Web Dashboard Issues
+
+**Port Already in Use**
+```bash
+# Use different port
+tsr server --port 8080
+
+# Find process using port
+lsof -i :5000
+kill -9 <PID>
+```
+
+**Dashboard Not Accessible**
+```bash
+# Check firewall
+sudo ufw allow 5000
+
+# Bind to all interfaces
+tsr server --host 0.0.0.0
+```
+
+---
+
+## 📜 License
+
+**MIT License**
+
+Copyright (c) 2024 Md. Jony Hassain
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+## 👨‍💻 Author
+
+**Md. Jony Hassain**
+- **Email**: jonyhossan110@gmail.com
+- **Organization**: HexaCyberLab Web Agency
+- **GitHub**: [@jonyhossan110](https://github.com/jonyhossan110)
+- **LinkedIn**: [Md. Jony Hassain](https://linkedin.com/in/jonyhossan)
+- **Website**: [HexaCyberLab](https://hexacyberlab.com)
+
+### Support
+- 📧 **Email**: jonyhossan110@gmail.com
+- 🐛 **Issues**: [GitHub Issues](https://github.com/jonyhossan110/terminal-session-recorder/issues)
+- 💬 **Discussions**: [GitHub Discussions](https://github.com/jonyhossan110/terminal-session-recorder/discussions)
+- 📖 **Documentation**: [Complete Installation Guide](INSTALL.md)
+
+---
+
+## 🙏 Acknowledgments
+
+- **Inspiration**: asciinema, script, ttyrec
+- **Community**: Penetration testing and security research community
+- **Contributors**: Open source community
+- **Tools**: Python ecosystem, security research tools
+
+---
+
+## 📈 Roadmap
+
+### v2.1.0 (Planned)
+- [ ] Cloud storage integration (AWS S3, Google Cloud)
+- [ ] Team collaboration features
+- [ ] Advanced analytics dashboard
+- [ ] Mobile app companion
+- [ ] API rate limiting and caching
+
+### v2.2.0 (Future)
+- [ ] AI-powered command analysis
+- [ ] Automated report generation
+- [ ] Integration with SIEM systems
+- [ ] Compliance automation (PCI-DSS, HIPAA)
+- [ ] Multi-language support
+
+---
+
+**Terminal Session Recorder v2.0.0** - Professional terminal session recording for security professionals.
+
+⭐ **Star this repository** if you find it useful!
 ```
 
 ### Manual Installation
