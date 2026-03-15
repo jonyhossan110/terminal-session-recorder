@@ -2,6 +2,307 @@
 
 Before publishing, ensure all tests pass.
 
+## 🚀 Step-by-Step Testing Guide
+
+### Prerequisites
+```bash
+# Ensure you're in the project directory
+cd terminal-session-recorder
+
+# Activate virtual environment
+source .venv/bin/activate
+
+# Verify installation
+tsr --version  # Should show 2.0.0
+tsr --help     # Should show all commands
+```
+
+### Step 1: Basic Recording Test
+```bash
+# Create test directory
+mkdir -p test_output
+cd test_output
+
+# Start basic recording
+tsr record --user-name "Test User" --organization "Test Corp"
+
+# In the TSR prompt, run these commands:
+whoami
+pwd
+ls -la
+echo "Hello TSR v2.0!"
+date
+ps aux | head -5
+exit
+
+# Check if files were created
+ls -la
+# Should see: session_*.json, session_*.pdf, session_*.html, session_*.csv
+```
+
+### Step 2: Advanced Recording with Screenshots
+```bash
+# Test with screenshots (requires GUI)
+tsr record --user-name "Test User" --enable-screenshots --output-dir ./screenshots_test
+
+# Run some commands that change the terminal output
+clear
+echo "Testing screenshots"
+ls -la /
+df -h
+top -n 1 | head -10
+exit
+
+# Check screenshot files
+ls screenshots_test/
+# Should see screenshot_*.png files
+```
+
+### Step 3: Network Monitoring Test
+```bash
+# Test network monitoring (may require sudo)
+sudo tsr record --user-name "Test User" --enable-network-monitor --output-dir ./network_test
+
+# Run network-related commands
+ping -c 3 google.com
+curl -I https://github.com
+nslookup github.com
+exit
+
+# Check network data in JSON output
+cat network_test/session_*.json | grep -A 10 network_packets
+```
+
+### Step 4: Plugin System Test
+```bash
+# Test Nmap plugin
+tsr record --user-name "Test User" --output-dir ./plugin_test
+
+# Run nmap command
+nmap -sV -p 80,443 localhost
+exit
+
+# Check if command was classified as SCANNING
+cat plugin_test/session_*.json | grep -A 5 classification
+
+# Test Metasploit plugin (if available)
+msfconsole -q -x "version; exit"
+# Check classification in output
+```
+
+### Step 5: Export Features Test
+```bash
+# Generate a session first
+tsr record --user-name "Export Test" --output-dir ./export_test
+# Run: echo "Testing exports"; ls; exit
+
+# Test individual exports
+tsr export --session-id $(ls export_test/session_*.json | head -1 | xargs basename | sed 's/session_//;s/\.json//') --format pdf --output export_test/manual.pdf
+tsr export --session-id $(ls export_test/session_*.json | head -1 | xargs basename | sed 's/session_//;s/\.json//') --format html --output export_test/manual.html
+tsr export --session-id $(ls export_test/session_*.json | head -1 | xargs basename | sed 's/session_//;s/\.json//') --format json --output export_test/manual.json
+tsr export --session-id $(ls export_test/session_*.json | head -1 | xargs basename | sed 's/session_//;s/\.json//') --format csv --output export_test/manual.csv
+
+# Verify files
+ls -la export_test/
+file export_test/manual.pdf   # Should be PDF
+file export_test/manual.html  # Should be HTML
+python3 -c "import json; json.load(open('export_test/manual.json'))"  # Should not error
+head export_test/manual.csv   # Should have CSV headers
+```
+
+### Step 6: Web Dashboard Test
+```bash
+# Start web server in background
+tsr-server &
+SERVER_PID=$!
+
+# Wait a moment
+sleep 3
+
+# Test if server is running
+curl -s http://localhost:5000 | head -10
+# Should return HTML content
+
+# Test API endpoints
+curl -s http://localhost:5000/api/sessions | head -5
+curl -s http://localhost:5000/api/stats | head -5
+
+# Open in browser (if GUI available)
+# firefox http://localhost:5000 or chrome http://localhost:5000
+
+# Stop server
+kill $SERVER_PID
+```
+
+### Step 7: Session Replay Test
+```bash
+# Create a session to replay
+tsr record --user-name "Replay Test" --output-dir ./replay_test
+# Run: echo "First command"; sleep 1; echo "Second command"; exit
+
+# Test replay
+tsr replay --session-id $(ls replay_test/session_*.json | head -1 | xargs basename | sed 's/session_//;s/\.json//')
+# Should replay the commands with timing
+```
+
+### Step 8: Database and Search Test
+```bash
+# List all sessions
+tsr list
+# Should show all recorded sessions
+
+# Search for specific commands
+tsr search --query "echo"
+# Should find sessions with echo commands
+
+# Search by user
+tsr search --user "Test User"
+# Should find sessions by that user
+
+# Test statistics
+tsr stats
+# Should show session counts, command types, etc.
+```
+
+### Step 9: Configuration Test
+```bash
+# Check current config
+cat ~/.tsr/config.yaml
+
+# Test config reload
+tsr init --force
+# Should recreate config
+
+# Test custom config
+cp ~/.tsr/config.yaml ~/.tsr/config.backup
+echo "database_path: ./custom.db" >> ~/.tsr/config.yaml
+tsr record --user-name "Config Test" --output-dir ./config_test
+# Should use custom database
+ls custom.db  # Should exist
+exit
+
+# Restore config
+mv ~/.tsr/config.backup ~/.tsr/config.yaml
+```
+
+### Step 10: CLI Options Test
+```bash
+# Test various CLI options
+tsr record --help
+tsr list --help
+tsr search --help
+tsr export --help
+
+# Test output directory option
+tsr record --user-name "CLI Test" --output-dir /tmp/tsr_test
+ls /tmp/tsr_test/
+# Should create files in /tmp/tsr_test
+
+# Test timeout option
+timeout 10 tsr record --user-name "Timeout Test" --timeout 5
+# Should exit after 5 seconds
+```
+
+### Step 11: Error Handling Test
+```bash
+# Test invalid commands
+tsr invalid-command
+# Should show error and help
+
+# Test missing required options
+tsr record
+# Should prompt for user name or show error
+
+# Test invalid session ID
+tsr export --session-id invalid-id
+# Should show error
+
+# Test network without permissions
+tsr record --enable-network-monitor 2>&1 | grep -i permission
+# Should show permission warning (if not root)
+```
+
+### Step 12: Performance Test
+```bash
+# Test with large output
+tsr record --user-name "Performance Test" --output-dir ./perf_test
+# Run: find /usr -name "*.py" 2>/dev/null | head -100
+# Run: ps aux
+# Run: dmesg | tail -50
+exit
+
+# Check file sizes
+ls -lh perf_test/
+# Should be reasonable sizes
+
+# Test multiple sessions
+for i in {1..5}; do
+  tsr record --user-name "Batch Test $i" --output-dir ./batch_test_$i
+  echo "Test command $i"; exit
+done
+
+tsr list | grep "Batch Test" | wc -l
+# Should show 5 sessions
+```
+
+### Step 13: Integration Test
+```bash
+# Full workflow test
+mkdir integration_test
+cd integration_test
+
+# Record with all features
+tsr record --user-name "Integration Test" --enable-screenshots --enable-network-monitor --organization "Test Corp"
+
+# Run comprehensive commands
+echo "=== System Info ==="
+uname -a
+whoami
+pwd
+
+echo "=== Network Test ==="
+ping -c 2 8.8.8.8
+
+echo "=== File Operations ==="
+touch test_file.txt
+echo "Test content" > test_file.txt
+cat test_file.txt
+rm test_file.txt
+
+echo "=== Process Info ==="
+ps | head -5
+
+exit
+
+# Export all formats
+SESSION_ID=$(ls session_*.json | head -1 | sed 's/session_//;s/\.json//')
+tsr export --session-id $SESSION_ID --format all
+
+# Start web server and check
+tsr-server &
+sleep 2
+curl -s http://localhost:5000/api/sessions | grep "Integration Test"
+kill %1
+
+# Verify all files created
+ls -la
+# Should have: session files, exports, screenshots, network data
+```
+
+### Cleanup
+```bash
+# Remove test files
+rm -rf test_output screenshots_test network_test plugin_test export_test
+rm -rf replay_test config_test perf_test batch_test_* integration_test
+rm -f custom.db
+
+# Reset database if needed
+rm -f ~/.tsr/sessions.db
+tsr init
+```
+
+---
+
 ## 🧪 Installation Testing
 
 ### Linux (Ubuntu 22.04)
