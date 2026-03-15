@@ -306,6 +306,48 @@ class TerminalSessionRecorder:
         finally:
             self.save_report()
 
+    def run_shell(self, shell: str = None):
+        """Run an interactive shell under the recorder.
+
+        This is intended for use in situations where you want every new terminal
+        to be recorded automatically (e.g. via ~/.bashrc or ~/.zshrc).
+        """
+        import shutil
+
+        shell = shell or os.environ.get('SHELL', '/bin/bash')
+        self.log(f"[start] Launching shell recorder ({shell})")
+
+        # Use the system 'script' command if available to capture a full transcript.
+        script_path = shutil.which('script')
+        transcript_file = os.path.join(self.output_dir, f"{self.output_prefix}.typescript")
+
+        if script_path:
+            cmd = [script_path, '-q', transcript_file, '-c', shell]
+            try:
+                subprocess.run(cmd)
+            except KeyboardInterrupt:
+                # User interrupted the shell session
+                pass
+
+            try:
+                with open(transcript_file, 'r', encoding='utf-8', errors='ignore') as f:
+                    transcript = f.read()
+            except Exception as exc:
+                transcript = f"[error reading transcript: {exc}]"
+
+            entry = {
+                'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                'type': 'shell',
+                'shell': shell,
+                'transcript': transcript,
+            }
+            self.commands.append(entry)
+        else:
+            self.log("[warn] 'script' command not found; falling back to command-by-command recording.")
+            self.run()
+
+        self.save_report()
+
     # ------------------------------------------------------------------ exports
     def save_report(self):
         if self._saved:
