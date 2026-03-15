@@ -96,7 +96,225 @@ pip install google-cloud-storage
 
 ## Platform-Specific Notes
 
-### Linux
+### Linux (Complete Setup Guide)
+
+#### Step 1: System Requirements
+**Ubuntu/Debian:**
+```bash
+sudo apt update
+sudo apt install -y python3 python3-pip python3-venv python3-dev build-essential
+sudo apt install -y tesseract-ocr tesseract-ocr-eng libtesseract-dev
+sudo apt install -y libjpeg-dev zlib1g-dev libpng-dev libfreetype6-dev
+sudo apt install -y libpcap-dev tcpdump  # For network monitoring
+```
+
+**CentOS/RHEL/Fedora:**
+```bash
+# CentOS/RHEL
+sudo yum install -y python3 python3-pip python3-devel gcc gcc-c++
+sudo yum install -y tesseract tesseract-devel leptonica-devel
+sudo yum install -y libjpeg-devel zlib-devel libpng-devel freetype-devel
+sudo yum install -y libpcap-devel tcpdump
+
+# Fedora
+sudo dnf install -y python3 python3-pip python3-devel gcc gcc-c++
+sudo dnf install -y tesseract tesseract-devel leptonica-devel
+sudo dnf install -y libjpeg-devel zlib-devel libpng-devel freetype-devel
+sudo dnf install -y libpcap-devel tcpdump
+```
+
+**Arch Linux:**
+```bash
+sudo pacman -S python python-pip python-virtualenv
+sudo pacman -S tesseract tesseract-data-eng leptonica
+sudo pacman -S libjpeg-turbo zlib libpng freetype2
+sudo pacman -S libpcap tcpdump
+```
+
+#### Step 2: Clone and Setup
+```bash
+# Clone repository
+git clone https://github.com/jonyhossan110/terminal-session-recorder.git
+cd terminal-session-recorder
+
+# Make setup script executable
+chmod +x setup_linux.sh
+
+# Run automated setup
+./setup_linux.sh
+```
+
+#### Step 3: Manual Installation (Alternative)
+```bash
+# Create virtual environment
+python3 -m venv .venv
+source .venv/bin/activate
+
+# Upgrade pip and tools
+pip install --upgrade pip setuptools wheel
+
+# Install with all features
+pip install -e ".[all]"
+
+# Initialize configuration
+tsr init
+```
+
+#### Step 4: Network Monitoring Setup (Optional)
+```bash
+# Allow Python to capture packets without root
+sudo setcap cap_net_raw,cap_net_admin=eip $(which python3)
+
+# Or run TSR with sudo for network features
+sudo -E .venv/bin/python3 -m tsr.cli record --network-monitor
+```
+
+#### Step 5: Verify Installation
+```bash
+# Activate environment
+source .venv/bin/activate
+
+# Check version
+tsr --version
+
+# Test basic functionality
+tsr --help
+
+# Test recording (in a new terminal)
+tsr record --user-name "Test User" --output-dir ./test_session
+```
+
+### Common Linux Errors & Solutions
+
+#### Error: "python3: command not found"
+```bash
+# Install Python 3
+sudo apt install python3 python3-pip  # Ubuntu/Debian
+sudo yum install python3 python3-pip  # CentOS/RHEL
+sudo dnf install python3 python3-pip  # Fedora
+```
+
+#### Error: "ModuleNotFoundError: No module named 'PIL'"
+```bash
+# Install system libraries for Pillow
+sudo apt install libjpeg-dev zlib1g-dev libpng-dev libfreetype6-dev
+pip install --upgrade Pillow
+```
+
+#### Error: "ImportError: libtesseract.so.4: cannot open shared object file"
+```bash
+# Install Tesseract properly
+sudo apt install tesseract-ocr libtesseract-dev
+pip install --upgrade pytesseract
+```
+
+#### Error: "Permission denied" for network monitoring
+```bash
+# Option 1: Run with sudo
+sudo -E .venv/bin/python3 -m tsr.cli record --network-monitor
+
+# Option 2: Grant capabilities (recommended)
+sudo setcap cap_net_raw,cap_net_admin=eip $(which python3)
+```
+
+#### Error: "Failed building wheel for scapy"
+```bash
+# Install development tools
+sudo apt install python3-dev build-essential libpcap-dev
+pip install scapy
+```
+
+#### Error: "Virtual environment not activating"
+```bash
+# Use correct activation command
+source .venv/bin/activate  # Not: source .venv/bin/activate.fish or others
+
+# Check if you're in the right directory
+pwd  # Should be: /path/to/terminal-session-recorder
+```
+
+#### Error: "tsr: command not found"
+```bash
+# Ensure virtual environment is activated
+source .venv/bin/activate
+
+# Or install globally
+pip install --user -e .
+
+# Add to PATH if needed
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+### Testing the Installation
+
+#### Basic Test
+```bash
+source .venv/bin/activate
+tsr --version
+tsr --help
+```
+
+#### Full Feature Test
+```bash
+# Create test directory
+mkdir test_session
+cd test_session
+
+# Start recording with all features
+tsr record \
+  --user-name "Test User" \
+  --output-dir ./output \
+  --enable-screenshots \
+  --enable-network-monitor \
+  --export-formats json,pdf
+
+# In another terminal, run some commands
+echo "Testing TSR recording"
+ls -la
+ps aux | head -5
+
+# Stop recording (Ctrl+C)
+```
+
+#### Web Dashboard Test
+```bash
+# Start web server
+tsr-server
+
+# Open browser: http://localhost:5000
+```
+
+### Performance Optimization
+
+#### For Better Screenshot Performance
+```bash
+# Install optimized libraries
+sudo apt install libjpeg-turbo-progs
+pip install --upgrade Pillow
+```
+
+#### For Network Monitoring
+```bash
+# Increase buffer size
+sudo sysctl -w net.core.rmem_max=26214400
+sudo sysctl -w net.core.rmem_default=26214400
+```
+
+### Uninstallation
+
+```bash
+# Remove virtual environment
+rm -rf .venv
+
+# Remove global installation
+pip uninstall terminal-session-recorder
+
+# Remove configuration
+rm -rf ~/.tsr
+
+# Remove system packages (optional)
+sudo apt remove tesseract-ocr libtesseract-dev
+```
 
 **System Packages** (Ubuntu/Debian):
 ```bash
