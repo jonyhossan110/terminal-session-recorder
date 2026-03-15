@@ -160,6 +160,32 @@ pip install -e ".[all]"
 tsr init
 ```
 
+### Step 3b (Optional): Auto-record every new terminal
+If you want every new shell/terminal window to be automatically recorded (and stop recording only when you exit that shell), add this to your shell startup file.
+
+**For Bash (`~/.bashrc`):**
+```bash
+# TSR auto-recording (only runs once per shell)
+if [ -z "$TSR_AUTO_REC" ]; then
+  export TSR_AUTO_REC=1
+  # Change this command if you installed the package differently (e.g., pip install)
+  tsr record --user-name "$USER" --output-dir "$HOME/.tsr/sessions" 
+  exit
+fi
+```
+
+**For Zsh (`~/.zshrc`):**
+```bash
+if [ -z "$TSR_AUTO_REC" ]; then
+  export TSR_AUTO_REC=1
+  exec terminal-session-recorder --auto-shell --user-name "$USER"
+fi
+```
+
+After adding this, open a new terminal tab/window. TSR will start recording automatically and will stop only when you exit the shell.
+
+> Tip: If you want to temporarily disable auto-recording, start a shell with `TSR_AUTO_REC=1 bash`.
+
 #### Step 4: Network Monitoring Setup (Optional)
 ```bash
 # Allow Python to capture packets without root

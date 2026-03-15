@@ -17,7 +17,23 @@ tsr --version  # Should show 2.0.0
 tsr --help     # Should show all commands
 ```
 
-### Step 1: Basic Recording Test
+### Step 1: Automatic terminal recording (optional)
+```bash
+# Add auto-recording to ~/.bashrc (only once)
+cat <<'EOF' >> ~/.bashrc
+# TSR auto-recording (only runs once per shell)
+if [ -z "$TSR_AUTO_REC" ]; then
+  export TSR_AUTO_REC=1
+  tsr record --user-name "$USER" --output-dir "$HOME/.tsr/sessions"
+  exit
+fi
+EOF
+
+# Open a new terminal tab/window and confirm it starts recording automatically.
+# When you exit that terminal, recording stops and session data is saved.
+```
+
+### Step 2: Basic Recording Test
 ```bash
 # Create test directory
 mkdir -p test_output

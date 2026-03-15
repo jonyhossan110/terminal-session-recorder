@@ -152,6 +152,7 @@ class SessionRecorder:
         self.classifier = get_classifier()
         self.running = False
         self.pty_recorder = None
+        self._pty_transcript = bytearray()
         
         # Monitoring components
         self.monitors = []
@@ -370,6 +371,9 @@ class SessionRecorder:
                 if self.pty_recorder.master_fd in readable:
                     data = await self.pty_recorder.read_output()
                     if data:
+                        # Record transcript (limited size for memory)
+                        if len(self._pty_transcript) < self.config.session.truncate_output * 10:
+                            self._pty_transcript.extend(data)
                         os.write(sys.stdout.fileno(), data)
                 
         finally:
@@ -457,12 +461,52 @@ TSR Special Commands:
         if self.pty_recorder:
             await self.pty_recorder.close()
         
+        # Save PTY transcript as a single command entry (if any)
+        await self._save_pty_transcript()  
+
         # Final stats update
         await self._update_session_stats()
         await self.db.update_session(
             self.session_id,
             end_time=self.end_time.isoformat()
         )
+
+    async def _save_pty_transcript(self):
+        """Save full PTY transcript as a single command entry for audit."""
+        if not self._pty_transcript:
+            return
+
+        transcript = self._pty_transcript.decode('utf-8', errors='replace')
+        transcript = transcript[: self.config.session.truncate_output]
+
+        ctx = CommandContext(
+            command="interactive-shell",
+            start_time=self.start_time,
+            end_time=self.end_time,
+            return_code=0,
+            stdout=transcript,
+            stderr="",
+        )
+
+        self.commands.append(ctx)
+
+        category, tags, confidence = self.classifier.classify(ctx.command)
+        duration_ms = int((ctx.end_time - ctx.start_time).total_seconds() * 1000)
+
+        entry = CommandEntry(
+            session_id=self.session_id,
+            timestamp=ctx.start_time.isoformat(),
+            command=ctx.command,
+            command_type=category.value,
+            return_code=ctx.return_code,
+            stdout=ctx.stdout[: self.config.session.truncate_output],
+            stderr=ctx.stderr[: self.config.session.truncate_output],
+            duration_ms=duration_ms,
+            hash=hashlib.sha256(ctx.command.encode()).hexdigest(),
+            tags=json.dumps(tags),
+        )
+
+        await self.db.add_command(entry)
         
         print(f"\n[TSR] Session ended: {self.session_id}")
         print(f"[TSR] Total commands: {len(self.commands)}")
