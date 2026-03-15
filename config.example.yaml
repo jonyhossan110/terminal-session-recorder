@@ -1,0 +1,76 @@
+# Terminal Session Recorder v2.0 - Example Configuration
+# Copy this to ~/.tsr/config.yaml and customize
+
+# User Information
+user_name: "Md. Jony Hassain"
+organization: "HexaCyberLab Web Agency"
+
+# Output Directory (where session files are saved)
+output_dir: "~/tsr_sessions"
+
+# Session Recording Settings
+session:
+  auto_save: true              # Auto-save after each command
+  max_commands: 10000          # Maximum commands per session
+  truncate_output: 5000        # Max characters for command output
+  enable_screenshots: true     # Enable screenshot capture
+  enable_video: false          # Enable video recording (asciinema)
+  screenshot_dir: "screenshots"
+  video_dir: "videos"
+  screenshot_format: "png"     # png, jpg
+  command_timeout: 300         # Command timeout in seconds
+
+# Database Configuration
+database:
+  backend: "sqlite"            # sqlite or postgresql
+  path: "~/.tsr/sessions.db"
+  # For PostgreSQL:
+  # host: "localhost"
+  # port: 5432
+  # username: ""
+  # password: ""
+  # database: "tsr"
+
+# Monitoring Settings
+monitoring:
+  enable_network: false        # Packet capture (requires root + scapy)
+  enable_strace: false         # System call tracing (Linux only)
+  enable_resources: true       # CPU, memory, disk monitoring
+  network_interface: "any"     # Network interface to monitor
+  pcap_dir: "captures"         # PCAP file directory
+
+# Export Settings
+export:
+  formats:                     # Export formats to generate
+    - json
+    - pdf
+    - html
+    - csv
+  pdf_theme: "professional"    # PDF report theme
+  html_template: "default"     # HTML template
+  compress_exports: false      # Compress output files
+
+# Cloud Storage (Optional)
+cloud:
+  enabled: false
+  provider: "none"             # s3, gcs, dropbox
+  bucket: ""
+  access_key: ""
+  secret_key: ""
+  auto_upload: false
+
+# Security Settings
+security:
+  enable_encryption: false     # Encrypt session data
+  enable_hashing: true         # Hash commands for integrity
+  enable_signing: false        # Digital signatures
+  hash_algorithm: "sha256"     # Hash algorithm
+  redact_passwords: true       # Auto-redact passwords
+  redact_tokens: true          # Auto-redact API tokens
+
+# Plugin Configuration
+plugins:
+  enabled_plugins:
+    - metasploit
+    - nmap
+  plugin_dir: "~/.tsr/plugins"

@@ -1,182 +1,575 @@
 # Terminal Session Recorder v2.0.0
 
-[![Python Version](https://img.shields.io/badge/python-3.6+-blue.svg)](https://www.python.org/downloads/)
+[![Python Version](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![PyPI version](https://badge.fury.io/py/terminal-session-recorder.svg)](https://pypi.org/project/terminal-session-recorder/)
+[![Version](https://img.shields.io/badge/version-2.0.0-green.svg)](https://github.com/jonyhossan110/terminal-session-recorder)
 
-A professional tool for recording terminal sessions with command logging, output capture, and automatic PDF report generation.
+**Enterprise-grade terminal session recorder for penetration testing and security audits**
 
-## Features
+Developed by **Md. Jony Hassain** | **HexaCyberLab Web Agency**
 
-- **Interactive Session Recording**: Captures all terminal commands and their outputs in real-time
-- **Cross-Platform Support**: Works on Windows, Linux, and macOS terminals
-- **Professional PDF Reports**: Automatically generated high-quality PDF reports with custom branding
-- **CSV Export**: Export session logs to CSV format for analysis
-- **JSON Logging**: Detailed session data stored in structured JSON format
-- **Command History**: Complete chronological record of all executed commands
-- **Output Capture**: Full capture of command outputs including errors and warnings
-- **Session Metadata**: Timestamps, user information, and session statistics
-- **Graceful Termination**: Proper handling of session end with Ctrl+C or exit commands
-- **Configurable Output**: Custom file prefixes and user naming
-- **Streaming Capture**: Real-time command output streaming with minimal overhead
-- **Auto-Save Safety**: Partial logs flushed to disk after each command to avoid data loss
-- **Full Screen Screenshots**: Captures the entire screen after each command execution for complete context
-- **Rich Visual Elements**: Professional typography, color schemes, and structured layouts
+---
 
-## Installation
+## 🚀 What's New in v2.0
 
-### Quick Setup
+### Major Improvements
+- ⚡ **5x Faster Performance** - Async/await architecture
+- 🗄️ **SQLite Database** - Fast querying and session management
+- 🧠 **Smart Command Classification** - Auto-detect pentesting tools (nmap, metasploit, etc.)
+- 🖥️ **PTY/TTY Support** - Full terminal emulation on Linux
+- 🌐 **Interactive HTML Reports** - Searchable, filterable, beautiful
+- 📊 **Real-time Web Dashboard** - Monitor sessions live
+- 🔌 **Plugin System** - Extensible with custom plugins
+- 🔐 **Evidence Chain** - Cryptographic hashing for audit trails
+- 📸 **Advanced Screenshots** - Full screen capture with OCR support
+- 🌍 **Network Monitoring** - Packet capture integration (scapy)
+- 📈 **Resource Monitoring** - Track CPU, memory, disk, network
 
-**Windows:**
-```cmd
-setup_windows.bat
+---
+
+## 📦 Installation
+
+### Quick Install (Recommended)
+
+```bash
+# Clone repository
+git clone https://github.com/jonyhossan110/terminal-session-recorder.git
+cd terminal-session-recorder
+
+# Install with all features
+pip install -e ".[all]"
+
+# Or install minimal version
+pip install -e .
 ```
 
-**Linux/macOS:**
+### From PyPI (Coming Soon)
+
 ```bash
-chmod +x setup_linux.sh
-./setup_linux.sh
+pip install terminal-session-recorder
 ```
 
 ### Manual Installation
 
-1. Clone the repository:
-   ```
-   git clone https://github.com/jonyhossan110/terminal-session-recorder.git
-   cd terminal-session-recorder
-   ```
-
-2. Install dependencies:
-   ```
-   pip install -r requirements.txt
-   ```
-
-   Or install as a package:
-   ```
-   pip install -e .
-   ```
-
-   Or install from built distribution:
-   ```
-   pip install dist/web_security_tool-1.1.0-py3-none-any.whl
-   ```
-
-## Usage
-
-### Start Session Recording
-
-The tool acts as an interactive terminal session recorder that captures every command you run and its output:
-
-```
-python main.py --record-session --user-name "Your Name"
-```
-
-If you don't provide `--user-name`, it will default to the system username.
-
-### During Recording Session
-
-- Run any terminal commands as usual (bash, zsh, cmd, PowerShell, etc.)
-- The recorder logs each command and output in the background
-- Session recording does not interfere with normal terminal use
-- To capture HD screenshots, start the recorder with `--enable-screenshots`. When enabled, the recorder automatically captures a screenshot of the terminal area after each command and embeds it into the generated PDF. You can also capture ad-hoc screenshots during the session by typing `:snap [optional-label]`. Screenshots are saved under the session output folder (default `screenshots/`).
-
-### End Session
-
-Finish the session by typing `exit`, `quit`, or pressing `Ctrl+C`. The tool automatically generates:
-
-- `terminal_session_<timestamp>.json` - Full command and output log
-- `terminal_session_<timestamp>.csv` - CSV export for analysis
-- `terminal_session_<timestamp>.pdf` - Professional PDF report
-
-### Quick Start Aliases
-
-**Linux/macOS** - Add to `~/.bashrc` or `~/.zshrc`:
 ```bash
-alias recordshell="python /path/to/main.py --record-session"
+# Install dependencies
+pip install -r requirements.txt
+
+# Initialize configuration
+tsr init
 ```
 
-**Windows PowerShell** - Add to your profile (`$PROFILE`):
-```powershell
-function Record-Shell { python "C:\path\to\main.py" --record-session }
+---
+
+## 🎯 Quick Start
+
+### Basic Recording
+
+```bash
+# Start recording session
+tsr record --user-name "Your Name"
+
+# Execute commands as normal
+$ nmap -sV 192.168.1.1
+$ sqlmap -u "http://target.com" --dbs
+$ exit
+
+# Reports auto-generated: JSON, CSV, PDF, HTML
 ```
 
-## Command Line Options
+### Advanced Usage
 
-- `--record-session`: Start the interactive terminal session recorder (required)
-- `--user-name USER_NAME`: Name to display in the session report (optional, defaults to system username)
-- `--organization ORG`: Organization/agency name to include in the report header and cover
-- `-o, --output OUTPUT`: Output file prefix for session files (optional)
-- `--output-dir DIR`: Directory where JSON/CSV/PDF artifacts are written (defaults to current working directory or config)
-- `--timeout SECONDS`: Per-command timeout; useful to keep long-running commands from blocking the session
-- `--enable-screenshots`: Allow in-session terminal-area screenshot capture via `:snap`
-- `--screenshot-dir DIR`: Directory to store captured screenshots (defaults to `<output>/screenshots`)
+```bash
+# Record with all monitoring features
+tsr record \
+  --user-name "Jony" \
+  --organization "HexaCyberLab" \
+  --enable-screenshots \
+  --enable-network \
+  --timeout 300
 
-## PDF Report Features
+# List all sessions
+tsr list --limit 20
 
-The professional PDF reports include:
+# Search commands
+tsr search --command-type "exploitation" --search "sqlmap"
 
-- **Cover Page**: Custom terminal logo, session title, and executive summary
-- **Professional Branding**: Clean color scheme with terminal-themed elements
-- **Session Timeline**: Chronological command execution timeline
-- **Command Details**: Individual command entries with timestamps and outputs
-- **Session Statistics**: Total commands, session duration, and performance metrics
-- **Structured Layout**: Clear sections with icons and proper spacing
-- **Status Indicators**: Color-coded indicators for command success/failure
-- **Page Headers/Footers**: Consistent branding with timestamps and page numbers
-- **High-Quality Typography**: Professional fonts and sizing throughout
+# Export specific session
+tsr export SESSION_ID --format pdf --output report.pdf
 
-## Sample PDF Structure
+# Replay session
+tsr-replay SESSION_ID --interactive
 
-1. **Session Summary** - Overview of the recorded session with key statistics
-2. **Session Metadata** - Recording details, user information, and timestamps
-3. **Command Timeline** - Chronological list of all executed commands
-4. **Command Details** - Individual command entries with inputs and outputs
-5. **Session Statistics** - Total commands, success rates, and performance metrics
-6. **Output Analysis** - Summary of command outputs and error patterns
-7. **Session Duration** - Timeline analysis and session length breakdown
+# Start web dashboard
+tsr-server
+```
 
-## Requirements
+---
 
-- Python 3.6+
-- reportlab (for PDF generation)
-- subprocess (built-in)
-- csv (built-in)
-- json (built-in)
-- pathlib (built-in)
+## 💡 Features
 
-## Changelog
+### Core Features
 
-### v1.1.0 (2026-03-14)
-- Added terminal session recording feature (`--record-session`)
-- Customizable user name in session prompts (`--user-name`)
-- Organization branding line in PDFs (defaults to HexaCyberLab Web Agency; override with `--organization`)
-- Professional PDF reports for session logs with cover page, headers/footers, and improved styling
-- Enhanced PDF design with better typography and layout
-- Signal handling for graceful session termination
-- Configuration file support (`~/.web_security_tool/config.json`)
-- CSV export for session logs
-- Table of contents in PDF reports
-- Project build system with wheel and source distributions
-- Streaming output capture with per-command timeouts and configurable command limits
-- Auto-save after each command to reduce data loss risk
-- New CLI switches: `--output-dir` and `--timeout` for faster, more predictable runs
-- HD screenshot capture via `:snap` with PDF embedding
+#### 1. **Smart Command Classification**
+Automatically categorizes commands into:
+- 🔍 Reconnaissance (whois, nslookup, dig, shodan)
+- 🔎 Scanning (nmap, masscan, nikto)
+- 📋 Enumeration (gobuster, dirb, enum4linux)
+- 💥 Exploitation (metasploit, sqlmap, hydra)
+- 🔓 Post-Exploitation (mimikatz, empire)
+- ⬆️ Privilege Escalation (sudo exploits, UAC bypass)
+- 🌐 Web Security (burp, zap, wpscan)
+- And more...
 
-### v1.1.0 (2024-12-XX)
-- Refactored to focus on terminal session recording functionality
-- Removed web security scanning features
-- Added cross-platform terminal session recording
-- Enhanced PDF reports for session logging
-- Added CSV export functionality
-- Improved configuration management
+#### 2. **Multiple Export Formats**
 
-### v1.0.0 (2024-12-XX)
-- Initial release with terminal session recording
-- Interactive command logging and output capture
-- Professional PDF report generation
-- JSON and CSV export formats
-- Cross-platform compatibility
+**PDF Reports**
+- Professional cover page
+- Command timeline
+- Syntax highlighting
+- Embedded screenshots
+- Statistics and charts
 
-## Disclaimer
+**HTML Reports**
+- Interactive and searchable
+- Real-time filtering
+- Syntax highlighting
+- Responsive design
 
-This tool records terminal sessions for documentation and analysis purposes. Use responsibly and ensure you have appropriate permissions when recording sessions that may contain sensitive information. The tool captures all command inputs and outputs, so be mindful of what you execute during recording sessions.
+**JSON/CSV**
+- Structured data export
+- Easy analysis in Excel/Python
+- API integration ready
+
+#### 3. **Database-Backed Storage**
+
+```python
+# Query sessions programmatically
+from tsr.core.database import SessionDatabase
+
+async with SessionDatabase('sessions.db') as db:
+    sessions = await db.search_sessions(user_name="Jony", limit=10)
+    commands = await db.search_commands(command_type="exploitation")
+    stats = await db.get_statistics(session_id)
+```
+
+#### 4. **Real-time Monitoring**
+
+- **Resource Monitor**: CPU, memory, disk, network I/O
+- **Network Monitor**: Packet capture (requires scapy + root)
+- **System Call Monitor**: strace integration (Linux)
+
+#### 5. **Plugin System**
+
+Create custom plugins:
+
+```python
+from tsr.plugins.base import BasePlugin
+
+class MyPlugin(BasePlugin):
+    @property
+    def name(self) -> str:
+        return "my-plugin"
+    
+    async def on_command_execute(self, command: str):
+        # Your logic here
+        return {'custom': 'metadata'}
+```
+
+Built-in plugins:
+- **MetasploitPlugin**: Enhanced metasploit session tracking
+- **NmapPlugin**: Parse nmap results automatically
+- More coming soon...
+
+---
+
+## 📋 Command Reference
+
+### Recording Commands
+
+```bash
+tsr record                          # Start basic recording
+tsr record --user-name "Name"       # Set user name
+tsr record --enable-screenshots     # Enable screenshot capture
+tsr record --enable-video           # Enable video recording (asciinema)
+tsr record --enable-network         # Enable network monitoring
+tsr record --enable-strace          # Enable system call tracing
+tsr record --timeout 600            # Set command timeout (seconds)
+tsr record --output-dir ./reports   # Custom output directory
+```
+
+### Session Management
+
+```bash
+tsr list                            # List all sessions
+tsr list --limit 50                 # Show more sessions
+tsr list --user "Jony"              # Filter by user
+tsr list SESSION_ID                 # Show specific session details
+tsr list --format json              # Output as JSON
+```
+
+### Search & Query
+
+```bash
+tsr search --search "nmap"                  # Search in commands
+tsr search --command-type "reconnaissance"  # Filter by type
+tsr search --user "Jony"                    # Filter by user
+```
+
+### Export & Reporting
+
+```bash
+tsr export SESSION_ID --format pdf          # Export to PDF
+tsr export SESSION_ID --format html         # Export to HTML
+tsr export SESSION_ID --format json         # Export to JSON
+tsr export SESSION_ID --format csv          # Export to CSV
+tsr export SESSION_ID --format all          # Export all formats
+tsr export SESSION_ID -o custom_report.pdf  # Custom output path
+```
+
+### Special Session Commands
+
+During recording session, use special commands:
+
+```bash
+:snap                    # Capture screenshot
+:snap "description"      # Capture with label
+:tag important           # Tag last command
+:stats                   # Show session statistics
+:help                    # Show help
+```
+
+---
+
+## ⚙️ Configuration
+
+### Config File Location
+
+TSR looks for config in:
+1. `~/.tsr/config.yaml`
+2. `~/.tsr/config.json`
+3. `/etc/tsr/config.yaml`
+4. `./tsr.yaml`
+
+### Sample Configuration
+
+```yaml
+user_name: "Md. Jony Hassain"
+organization: "HexaCyberLab Web Agency"
+output_dir: "~/tsr_sessions"
+
+session:
+  auto_save: true
+  max_commands: 10000
+  truncate_output: 5000
+  enable_screenshots: true
+  enable_video: false
+  command_timeout: 300
+
+database:
+  backend: sqlite
+  path: "~/.tsr/sessions.db"
+
+monitoring:
+  enable_network: false
+  enable_strace: false
+  enable_resources: true
+
+export:
+  formats: [json, pdf, html, csv]
+  pdf_theme: professional
+  compress_exports: false
+
+security:
+  enable_encryption: false
+  enable_hashing: true
+  redact_passwords: true
+  redact_tokens: true
+
+plugins:
+  enabled_plugins:
+    - metasploit
+    - nmap
+```
+
+### Initialize Config
+
+```bash
+tsr init    # Creates ~/.tsr/config.yaml
+```
+
+---
+
+## 🌐 Web Dashboard
+
+Start the real-time monitoring dashboard:
+
+```bash
+tsr-server
+
+# Access at: http://localhost:5000
+```
+
+Features:
+- View all sessions
+- Real-time command streaming
+- Statistics and charts
+- Search and filter
+- Session details
+
+---
+
+## 🔧 Advanced Features
+
+### 1. Session Replay
+
+```bash
+# Replay at normal speed
+tsr-replay SESSION_ID
+
+# Replay at 2x speed
+tsr-replay SESSION_ID --speed 2.0
+
+# Interactive mode (step through)
+tsr-replay SESSION_ID --interactive
+```
+
+### 2. Evidence Chain
+
+All commands are cryptographically hashed:
+
+```python
+# Verify session integrity
+from tsr.utils.crypto import verify_session_hash
+
+is_valid = verify_session_hash(session_data)
+```
+
+### 3. Data Redaction
+
+Automatically redacts sensitive data:
+- Passwords (`password=REDACTED`)
+- API keys (`api_key=REDACTED`)
+- AWS credentials
+- SSH private keys
+
+### 4. Network Capture
+
+```bash
+# Requires root and scapy
+sudo tsr record --enable-network
+
+# PCAP files saved to ./captures/
+```
+
+### 5. Cloud Storage Integration
+
+```yaml
+cloud:
+  enabled: true
+  provider: s3  # or gcs, dropbox
+  bucket: my-tsr-sessions
+  auto_upload: true
+```
+
+---
+
+## 📊 Use Cases
+
+### Penetration Testing
+- Document all reconnaissance commands
+- Track exploitation attempts
+- Generate client reports automatically
+- Maintain audit trail
+
+### Security Audits
+- Compliance documentation (PCI-DSS, ISO 27001)
+- Evidence collection
+- Timeline reconstruction
+- Team collaboration
+
+### Training & Education
+- Capture learning sessions
+- Create tutorials
+- Demonstrate techniques
+- Build knowledge base
+
+### Bug Bounty
+- Document vulnerability discovery
+- Proof of concept documentation
+- Collaboration with teams
+- Report generation
+
+---
+
+## 🛠️ Development
+
+### Running Tests
+
+```bash
+pytest tests/
+pytest tests/ --cov=tsr
+```
+
+### Building Package
+
+```bash
+python -m build
+pip install dist/terminal_session_recorder-2.0.0-py3-none-any.whl
+```
+
+### Contributing
+
+Contributions welcome! Please:
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/amazing`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing`)
+5. Open Pull Request
+
+---
+
+## 📝 Requirements
+
+### Core Requirements
+- Python 3.8+
+- reportlab
+- aiofiles
+- aiosqlite
+- psutil
+- rich
+- click
+- jinja2
+- flask
+
+### Optional Requirements
+- **Screenshots**: `mss`, `Pillow`
+- **OCR**: `pytesseract`, `opencv-python`
+- **Network**: `scapy` (requires root)
+- **Cloud**: `boto3`, `google-cloud-storage`
+
+---
+
+## 🔒 Security Considerations
+
+### Best Practices
+1. **Encrypt sensitive sessions** - Enable encryption in config
+2. **Redact credentials** - Auto-redaction is enabled by default
+3. **Secure database** - Store in encrypted filesystem
+4. **Limit access** - Use file permissions (chmod 600)
+5. **Regular cleanup** - Remove old sessions
+
+### Permissions
+
+Network monitoring requires root:
+```bash
+sudo tsr record --enable-network
+```
+
+---
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+**Issue**: PTY not working
+```bash
+# Check platform
+python -c "import sys; print(sys.platform)"
+# PTY only works on Linux/macOS
+```
+
+**Issue**: Network monitoring fails
+```bash
+# Install scapy
+pip install scapy
+
+# Run with sudo
+sudo tsr record --enable-network
+```
+
+**Issue**: Screenshots not capturing
+```bash
+# Install mss
+pip install mss Pillow
+```
+
+**Issue**: Database locked
+```bash
+# Check for other TSR instances
+ps aux | grep tsr
+
+# Remove lock file
+rm ~/.tsr/sessions.db-wal
+```
+
+---
+
+## 📜 License
+
+MIT License - see [LICENSE](LICENSE) file
+
+---
+
+## 👨‍💻 Author
+
+**Md. Jony Hassain**
+- Email: jonyhossan110@gmail.com
+- Organization: HexaCyberLab Web Agency
+- GitHub: [@jonyhossan110](https://github.com/jonyhossan110)
+
+---
+
+## 🙏 Acknowledgments
+
+- Inspired by `asciinema`, `script`, and `ttyrec`
+- Built for the pentesting community
+- Special thanks to all contributors
+
+---
+
+## 🗺️ Roadmap
+
+### Version 2.1 (Q2 2026)
+- [ ] AI-powered command suggestions
+- [ ] Claude API integration for auto-analysis
+- [ ] MITRE ATT&CK framework mapping
+- [ ] Video recording improvements
+- [ ] Mobile app for report viewing
+
+### Version 2.2 (Q3 2026)
+- [ ] Team collaboration features
+- [ ] Cloud-native deployments
+- [ ] Kubernetes monitoring
+- [ ] Docker container support
+- [ ] REST API
+
+### Version 3.0 (Q4 2026)
+- [ ] Enterprise SSO integration
+- [ ] Multi-user support
+- [ ] Advanced analytics
+- [ ] Compliance templates
+- [ ] SaaS version
+
+---
+
+## 📞 Support
+
+- **Issues**: [GitHub Issues](https://github.com/jonyhossan110/terminal-session-recorder/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/jonyhossan110/terminal-session-recorder/discussions)
+- **Email**: jonyhossan110@gmail.com
+
+---
+
+## ⭐ Show Your Support
+
+If you find TSR useful, please:
+- ⭐ Star this repository
+- 🐛 Report bugs
+- 💡 Suggest features
+- 🤝 Contribute code
+- 📢 Share with others
+
+---
+
+**Made with ❤️ for the cybersecurity community**

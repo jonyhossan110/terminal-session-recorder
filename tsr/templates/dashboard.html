@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TSR Dashboard</title>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 3em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stat-label {
+            color: #666;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+        .sessions-list {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        .session-item {
+            border-bottom: 1px solid #eee;
+            padding: 20px 0;
+            transition: background 0.3s;
+        }
+        .session-item:hover {
+            background: #f8f9fa;
+            padding-left: 10px;
+        }
+        .session-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .session-id {
+            font-family: monospace;
+            color: #667eea;
+            font-weight: bold;
+        }
+        .badge {
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .status-active { background: #22c55e; }
+        .status-inactive { background: #ef4444; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🛡️ TSR Dashboard</h1>
+            <p style="color: #666;">Terminal Session Recorder - Real-time Monitoring</p>
+        </header>
+
+        <div class="stats-grid" id="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalSessions">-</div>
+                <div class="stat-label">Total Sessions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalCommands">-</div>
+                <div class="stat-label">Total Commands</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="activeSessions">-</div>
+                <div class="stat-label">Active Sessions</div>
+            </div>
+        </div>
+
+        <div class="sessions-list">
+            <h2 style="margin-bottom: 20px; color: #667eea;">Recent Sessions</h2>
+            <div id="sessionsList" class="loading">Loading sessions...</div>
+        </div>
+    </div>
+
+    <script>
+        const socket = io();
+        
+        socket.on('connect', () => {
+            console.log('Connected to TSR server');
+            loadSessions();
+        });
+
+        socket.on('new_command', (data) => {
+            console.log('New command:', data);
+            // Update UI in real-time
+        });
+
+        async function loadSessions() {
+            try {
+                const response = await fetch('/api/sessions');
+                const sessions = await response.json();
+                
+                // Update stats
+                document.getElementById('totalSessions').textContent = sessions.length;
+                const totalCommands = sessions.reduce((sum, s) => sum + s.command_count, 0);
+                document.getElementById('totalCommands').textContent = totalCommands;
+                document.getElementById('activeSessions').textContent = 
+                    sessions.filter(s => !s.end_time).length;
+                
+                // Render sessions
+                const html = sessions.map(session => `
+                    <div class="session-item">
+                        <div class="session-header">
+                            <div>
+                                <span class="status-indicator ${session.end_time ? 'status-inactive' : 'status-active'}"></span>
+                                <span class="session-id">${session.session_id}</span>
+                            </div>
+                            <span class="badge">${session.command_count} commands</span>
+                        </div>
+                        <div style="margin-top: 10px; color: #666; font-size: 0.9em;">
+                            <strong>${session.user_name}</strong> • ${session.start_time}
+                        </div>
+                    </div>
+                `).join('');
+                
+                document.getElementById('sessionsList').innerHTML = html || '<p>No sessions found</p>';
+            } catch (error) {
+                console.error('Error loading sessions:', error);
+                document.getElementById('sessionsList').innerHTML = '<p>Error loading sessions</p>';
+            }
+        }
+
+        // Refresh every 5 seconds
+        setInterval(loadSessions, 5000);
+    </script>
+</body>
+</html>
